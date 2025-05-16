@@ -34,7 +34,8 @@ const signInFields = [
     name: 'password',
     label: 'Password',
     type: 'password' as const,
-    placeholder: 'Enter your password'
+    placeholder: 'Enter your password',
+    required: true
   }
 ]
 
@@ -43,6 +44,8 @@ const signUpFields = [
   {
     name: 'name',
     label: 'Name',
+    placeholder: 'Enter your name',
+    required: true
   }
 ]
 
@@ -126,7 +129,7 @@ async function onSignUp(payload: FormSubmitEvent<SignUpSchema>) {
 <template>
   <div class="flex flex-col items-center justify-center gap-4 p-4">
     <UPageCard class="w-full max-w-md">
-      <UTabs :items>
+      <UTabs :items variant="link" :ui="{ list: 'mb-10'}">
         <template #signin>
           <UAuthForm
             :schema="signInSchema"

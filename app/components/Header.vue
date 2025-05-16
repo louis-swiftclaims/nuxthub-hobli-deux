@@ -1,24 +1,33 @@
 <script setup lang="ts">
-const { signOut, loggedIn } = useAuth()
+const { signOut, loggedIn, user } = useAuth()
 
-const headerLinks = [
-  {
-    label: 'Home',
-    to: '/',
-  },
-  {
-    label: 'User',
-    to: '/user',
-  },
-  {
-    label: 'Secret',
-    to: '/secret',
-  },
-  {
-    label: 'About',
-    to: '/about',
-  },
-]
+const headerLinks = computed(() => {
+  const isAdmin = user.value?.role === 'admin'
+  return [
+    {
+      label: 'Home',
+      to: '/',
+    },
+    {
+      label: 'User',
+      to: '/user',
+    },
+    {
+      label: 'Secret',
+      to: '/secret',
+    },
+    {
+      label: 'About',
+      to: '/about',
+    },
+    ...(isAdmin ? [
+      {
+        label: 'Admin',
+        to: '/admin',
+      }
+    ] : []),
+  ]
+})
 </script>
 <template>
   <div>

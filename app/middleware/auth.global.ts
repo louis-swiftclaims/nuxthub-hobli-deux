@@ -32,7 +32,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (to.meta?.auth === false) {
     return
   }
-  const { loggedIn, options, fetchSession } = useAuth()
+  const { loggedIn, options, fetchSession, user } = useAuth()
   const { only, redirectUserTo, redirectGuestTo } = defu(to.meta?.auth, options)
 
   // If guest mode, redirect if authenticated
@@ -55,5 +55,9 @@ export default defineNuxtRouteMiddleware(async (to) => {
       return
     }
     return navigateTo(redirectGuestTo)
+  }
+
+  if (only === 'admin' && user.value?.role !== 'admin') {
+    return navigateTo('/')
   }
 })
