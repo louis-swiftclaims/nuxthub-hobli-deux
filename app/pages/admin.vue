@@ -11,6 +11,8 @@ definePageMeta({
   },
 })
 
+const { isImpersonating, startImpersonation } = useImpersonation()
+
 const { data: usersData, refresh } = await useAsyncData('users', async () => {
   const { data } = await auth.client.admin.listUsers({
     query: {
@@ -113,19 +115,33 @@ const handleRefresh = () => {
         </template>
 
         <template #actions-cell="{ row }">
-          <UDropdownMenu
-            :items="roles.map(role => ({
-              label: role.charAt(0).toUpperCase() + role.slice(1),
-              onClick: () => updateUserRole(row.original.id, role),
-              disabled: role === row.original.role,
-            }))"
-          >
-            <UButton
-              color="neutral"
-              variant="ghost"
-              icon="i-lucide-ellipsis-vertical"
-            />
-          </UDropdownMenu>
+          <div class="flex items-center gap-2">
+            <UDropdownMenu
+              :items="[
+                {
+                  label: 'Change Role',
+                  icon: 'i-heroicons-user-circle',
+                  children: roles.map(role => ({
+                    label: role.charAt(0).toUpperCase() + role.slice(1),
+                    onClick: () => updateUserRole(row.original.id, role),
+                    disabled: role === row.original.role,
+                  })),
+                },
+                {
+                  label: 'Impersonate',
+                  icon: 'i-heroicons-user',
+                  onClick: () => startImpersonation(row.original),
+                  disabled: isImpersonating,
+                },
+              ]"
+            >
+              <UButton
+                color="neutral"
+                variant="ghost"
+                icon="i-lucide-ellipsis-vertical"
+              />
+            </UDropdownMenu>
+          </div>
         </template>
       </UTable>
     </UCard>

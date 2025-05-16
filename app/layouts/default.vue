@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ImpersonationBanner />
     <Header />
     <slot />
     <Footer />
