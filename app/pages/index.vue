@@ -87,7 +87,7 @@ async function signUp() {
           >
             Sign In
           </UButton>
-          <UDivider label="or" />
+          <USeparator label="or" />
           <UButton
             icon="i-simple-icons-github"
             type="button"

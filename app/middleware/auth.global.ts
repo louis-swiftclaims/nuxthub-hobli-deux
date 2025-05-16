@@ -4,7 +4,7 @@ type MiddlewareOptions = false | {
   /**
    * Only apply auth middleware to guest or user
    */
-  only?: 'guest' | 'user'
+  only?: 'guest' | 'user' | 'admin'
   /**
    * Redirect authenticated user to this route
    */
