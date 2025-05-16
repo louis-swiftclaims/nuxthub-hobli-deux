@@ -78,72 +78,59 @@ const handleRefresh = () => {
 </script>
 
 <template>
-  <UContainer>
-    <UCard>
-      <template #header>
-        <div class="flex items-center justify-between">
-          <h1 class="text-xl font-semibold">
-            User Management
-          </h1>
+  <UTable
+    :data="users"
+    :columns
+    :loading="!usersData"
+    :ui="{
+      base: 'table-fixed border-separate border-spacing-0',
+      thead: '[&>tr]:bg-elevated/50 [&>tr]:after:content-none',
+      tbody: '[&>tr]:last:[&>td]:border-b-0',
+      th: 'first:rounded-l-lg last:rounded-r-lg border-y border-default first:border-l last:border-r',
+      td: 'border-b border-default'
+    }"
+  >
+    <template #role-cell="{ row }">
+      <UBadge
+        :color="row.original.role === 'admin' ? 'error' : 'primary'"
+        variant="subtle"
+      >
+        {{ row.original.role }}
+      </UBadge>
+    </template>
+
+    <template #createdAt-cell="{ row }">
+      {{ new Date(row.original.createdAt).toLocaleDateString() }}
+    </template>
+
+    <template #actions-cell="{ row }">
+      <div class="flex items-center gap-2">
+        <UDropdownMenu
+          :items="[
+            {
+              label: 'Change Role',
+              icon: 'i-heroicons-user-circle',
+              children: roles.map(role => ({
+                label: role.charAt(0).toUpperCase() + role.slice(1),
+                onClick: () => updateUserRole(row.original.id, role),
+                disabled: role === row.original.role,
+              })),
+            },
+            {
+              label: 'Impersonate',
+              icon: 'i-heroicons-user',
+              onClick: () => startImpersonation(row.original),
+              disabled: isImpersonating,
+            },
+          ]"
+        >
           <UButton
-            icon="i-heroicons-arrow-path"
             color="neutral"
             variant="ghost"
-            @click="handleRefresh"
-          >
-            Refresh
-          </UButton>
-        </div>
-      </template>
-
-      <UTable
-        :data="users"
-        :columns
-        :loading="!usersData"
-      >
-        <template #role-cell="{ row }">
-          <UBadge
-            :color="row.original.role === 'admin' ? 'error' : 'primary'"
-            variant="subtle"
-          >
-            {{ row.original.role }}
-          </UBadge>
-        </template>
-
-        <template #createdAt-cell="{ row }">
-          {{ new Date(row.original.createdAt).toLocaleDateString() }}
-        </template>
-
-        <template #actions-cell="{ row }">
-          <div class="flex items-center gap-2">
-            <UDropdownMenu
-              :items="[
-                {
-                  label: 'Change Role',
-                  icon: 'i-heroicons-user-circle',
-                  children: roles.map(role => ({
-                    label: role.charAt(0).toUpperCase() + role.slice(1),
-                    onClick: () => updateUserRole(row.original.id, role),
-                    disabled: role === row.original.role,
-                  })),
-                },
-                {
-                  label: 'Impersonate',
-                  icon: 'i-heroicons-user',
-                  onClick: () => startImpersonation(row.original),
-                  disabled: isImpersonating,
-                },
-              ]"
-            >
-              <UButton
-                color="neutral"
-                variant="ghost"
-                icon="i-lucide-ellipsis-vertical"
-              />
-            </UDropdownMenu>
-          </div>
-        </template>
-      </UTable>
-    </UCard>
-  </UContainer>
+            icon="i-lucide-ellipsis-vertical"
+          />
+        </UDropdownMenu>
+      </div>
+    </template>
+  </UTable>
 </template>

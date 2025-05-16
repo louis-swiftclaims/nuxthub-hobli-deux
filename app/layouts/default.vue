@@ -2,7 +2,9 @@
   <div>
     <ImpersonationBanner />
     <Header />
-    <slot />
+    <UContainer class="mt-16">
+      <slot />
+    </UContainer>
     <Footer />
   </div>
 </template>
