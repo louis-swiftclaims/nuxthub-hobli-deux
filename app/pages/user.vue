@@ -11,8 +11,8 @@ const error = useRoute().query?.error
 onMounted(() => {
   if (error) {
     toast.add({
-      color: 'red',
-      title: error,
+      color: 'error',
+      title: error as string,
     })
   }
 })
@@ -34,7 +34,7 @@ onMounted(() => {
     <p class="mt-2">
       <UButton
         v-if="hasProvider('github')"
-        color="gray"
+        color="neutral"
         icon="i-simple-icons-github"
         trailing-icon="i-heroicons-check"
       >

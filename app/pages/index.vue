@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as z from 'zod'
-import type { FormSubmitEvent } from '@nuxt/ui'
+import type { FormSubmitEvent, TabsItem } from '@nuxt/ui'
 
 definePageMeta({
   auth: {
@@ -12,7 +12,18 @@ definePageMeta({
 const auth = useAuth()
 const toast = useToast()
 
-const fields = [
+const items = ref<TabsItem[]>([
+  {
+    label: 'Sign in',
+    slot: 'signin'
+  },
+  {
+    label: 'Sign up',
+    slot: 'signup'
+  }
+])
+
+const signInFields = [
   {
     name: 'email',
     type: 'text' as const,
@@ -27,6 +38,14 @@ const fields = [
   }
 ]
 
+const signUpFields = [
+  ...signInFields,
+  {
+    name: 'name',
+    label: 'Name',
+  }
+]
+
 const providers = [
   {
     label: 'GitHub',
@@ -37,21 +56,25 @@ const providers = [
   }
 ]
 
-const schema = z.object({
+const signInSchema = z.object({
   email: z.string().email('Invalid email'),
   password: z.string().min(8, 'Must be at least 8 characters')
 })
 
-type Schema = z.output<typeof schema>
+const signUpSchema = z.object({
+  ...signInSchema.shape,
+  name: z.string().min(1, 'Name is required')
+})
 
-async function onSubmit(payload: FormSubmitEvent<Schema>) {
-  console.log('Submitted', payload)
+type SignInSchema = z.output<typeof signInSchema>
+type SignUpSchema = z.output<typeof signUpSchema>
+
+async function onSignIn(payload: FormSubmitEvent<SignInSchema>) {
   try {
     const { data, error } = await auth.signIn.email({
       email: payload.data.email,
       password: payload.data.password,
     })
-    console.log('User', data)
     if (data) {
       toast.add({
         title: 'Successfully signed in',
@@ -72,62 +95,61 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   }
 }
 
-/* async function signIn() {
-  if (loading.value) return
-  loading.value = true
-  const { error } = await auth.signIn.email({
-    email: email.value,
-    password: password.value,
-  })
-  if (error) {
+async function onSignUp(payload: FormSubmitEvent<SignUpSchema>) {
+  try {
+    const { data, error } = await auth.signUp.email({
+      email: payload.data.email,
+      password: payload.data.password,
+      name: payload.data.name,
+    })
+    if (data) {
+      toast.add({
+        title: 'Successfully signed up',
+        color: 'success',
+      })
+      await navigateTo('/user')
+    } else {
+      toast.add({
+        title: error.message,
+        color: 'error',
+      })
+    }
+  } catch (error: any) {
     toast.add({
       title: error.message,
       color: 'error',
     })
-  } else {
-    await navigateTo('/user')
-    toast.add({
-      title: `You have been signed in!`,
-    })
   }
-  loading.value = false
 }
-
-async function signUp() {
-  if (loading.value) return
-  loading.value = true
-  const { error } = await auth.signUp.email({
-    email: email.value,
-    password: password.value,
-    name: name.value,
-  })
-  if (error) {
-    toast.add({
-      title: error.message,
-      color: 'error',
-    })
-  } else {
-    toast.add({
-      title: `You have been signed up!`,
-    })
-    await navigateTo('/user')
-  }
-  loading.value = false
-} */
 </script>
 
 <template>
   <div class="flex flex-col items-center justify-center gap-4 p-4">
     <UPageCard class="w-full max-w-md">
-      <UAuthForm
-        :schema
-        title="Login"
-        description="Enter your credentials to access your account."
-        icon="i-lucide-user"
-        :fields
-        :providers
-        @submit="onSubmit"
-      />
+      <UTabs :items>
+        <template #signin>
+          <UAuthForm
+            :schema="signInSchema"
+            title="Login"
+            description="Enter your credentials to access your account."
+            icon="i-lucide-user"
+            :fields="signInFields"
+            :providers
+            @submit="onSignIn"
+          />
+        </template>
+        <template #signup>
+          <UAuthForm
+            :schema="signUpSchema"
+            title="Sign up"
+            description="Create an account to access your account."
+            icon="i-lucide-user"
+            :fields="signUpFields"
+            :providers
+            @submit="onSignUp"
+          />
+        </template>
+      </UTabs>
     </UPageCard>
   </div>
 </template>
