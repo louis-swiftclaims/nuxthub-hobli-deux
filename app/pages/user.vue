@@ -42,7 +42,7 @@ onMounted(() => {
       </UButton>
       <UButton
         v-else
-        color="black"
+        color="neutral"
         icon="i-simple-icons-github"
         @click="client.linkSocial({ provider: 'github' })"
       >

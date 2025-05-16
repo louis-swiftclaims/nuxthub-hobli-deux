@@ -7,15 +7,17 @@ definePageMeta({
 })
 const auth = useAuth()
 const toast = useToast()
-const tabs = [{
-  slot: 'signin',
-  label: 'Sign In',
-  icon: 'i-heroicons-user',
-}, {
-  slot: 'signup',
-  label: 'Sign Up',
-  icon: 'i-heroicons-user-plus',
-}]
+const tabs = [
+  {
+    slot: 'signin',
+    label: 'Sign In',
+    icon: 'i-heroicons-user',
+  }, {
+    slot: 'signup',
+    label: 'Sign Up',
+    icon: 'i-heroicons-user-plus',
+  }
+]
 
 const email = ref('')
 const password = ref('')
@@ -34,8 +36,7 @@ async function signIn() {
       title: error.message,
       color: 'red',
     })
-  }
-  else {
+  } else {
     await navigateTo('/user')
     toast.add({
       title: `You have been signed in!`,
@@ -55,10 +56,9 @@ async function signUp() {
   if (error) {
     toast.add({
       title: error.message,
-      color: 'red',
+      color: 'error',
     })
-  }
-  else {
+  } else {
     toast.add({
       title: `You have been signed up!`,
     })
@@ -73,16 +73,16 @@ async function signUp() {
     <UTabs :items="tabs" class="max-w-md mx-auto">
       <template #signin>
         <form class="flex flex-col gap-4" @submit.prevent="signIn">
-          <UFormGroup label="Email" required>
+          <UFormField label="Email" required>
             <UInput v-model="email" type="email" placeholder="Email" />
-          </UFormGroup>
-          <UFormGroup label="Password" requiredrequired>
+          </UFormField>
+          <UFormField label="Password" requiredrequired>
             <UInput v-model="password" type="password" placeholder="Password" />
-          </UFormGroup>
+          </UFormField>
           <UButton
             type="submit"
-            color="black"
-            :loading="loading"
+            color="neutral"
+            :loading
             :disabled="!email || !password"
           >
             Sign In
@@ -91,7 +91,7 @@ async function signUp() {
           <UButton
             icon="i-simple-icons-github"
             type="button"
-            color="black"
+            color="neutral"
             @click="auth.signIn.social({ provider: 'github', callbackURL: '/user' })"
           >
             Sign In with Github
@@ -100,16 +100,16 @@ async function signUp() {
       </template>
       <template #signup>
         <form class="flex flex-col gap-4" @submit.prevent="signUp">
-          <UFormGroup label="Email" required>
+          <UFormField label="Email" required>
             <UInput v-model="email" type="email" placeholder="Email" />
-          </UFormGroup>
-          <UFormGroup label="Password" requiredrequired>
+          </UFormField>
+          <UFormField label="Password" requiredrequired>
             <UInput v-model="password" type="password" placeholder="Password" />
-          </UFormGroup>
-          <UFormGroup label="Name">
+          </UFormField>
+          <UFormField label="Name">
             <UInput v-model="name" type="name" placeholder="Name" />
-          </UFormGroup>
-          <UButton type="submit" color="black" :loading="loading">
+          </UFormField>
+          <UButton type="submit" color="neutral" :loading>
             Sign Up
           </UButton>
         </form>
