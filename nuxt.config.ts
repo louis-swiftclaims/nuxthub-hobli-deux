@@ -1,8 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // https://nuxt.com/modules
-  extends: '@nuxt/ui-pro',
-  modules: ['@nuxthub/core', '@nuxt/ui', '@nuxt/eslint'],
+  modules: ['@nuxthub/core', '@nuxt/ui-pro'],
   devtools: { enabled: true },
 
   runtimeConfig: {
@@ -15,20 +13,10 @@ export default defineNuxtConfig({
   },
 
   future: { compatibilityVersion: 4 },
-  compatibilityDate: '2024-07-30',
+  compatibilityDate: '2025-05-13',
 
-  // https://hub.nuxt.com/docs/getting-started/installation#options
   hub: {
     database: true,
     kv: true,
-  },
-
-  // https://eslint.nuxt.com
-  eslint: {
-    config: {
-      stylistic: {
-        quotes: 'single',
-      },
-    },
-  },
+  }
 })
