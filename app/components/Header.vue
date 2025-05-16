@@ -35,7 +35,7 @@ const headerLinks = computed(() => {
       <template #title>
         <div class="flex items-center gap-2">
           <UIcon name="i-simple-icons-nuxtdotjs" />
-          <span class="text-sm font-bold font-mono">
+          <span class="text-sm font-bold">
             BetterAuth
           </span>
         </div>

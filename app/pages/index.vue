@@ -128,17 +128,24 @@ async function onSignUp(payload: FormSubmitEvent<SignUpSchema>) {
 
 <template>
   <div class="flex flex-col items-center justify-center gap-4 p-4">
-    <UPageCard class="w-full max-w-md">
-      <UTabs :items variant="link" :ui="{ list: 'mb-10'}">
+    <UPageCard class="relative w-full max-w-md bg-muted/20">
+    <span class="cross absolute -bottom-px -left-px size-px" />
+    <span class="cross absolute -bottom-px -right-px size-px" />
+    <span class="cross absolute -left-px -top-px size-px" />
+    <span class="cross absolute -right-px -top-px size-px" />
+      <UTabs :items variant="link" :ui="{ list: 'mb-4'}">
         <template #signin>
           <UAuthForm
             :schema="signInSchema"
             title="Login"
             description="Enter your credentials to access your account."
-            icon="i-lucide-user"
             :fields="signInFields"
             :providers
             @submit="onSignIn"
+            :ui="{
+              title: 'text-left',
+              description: 'text-left'
+            }"
           />
         </template>
         <template #signup>
@@ -146,10 +153,13 @@ async function onSignUp(payload: FormSubmitEvent<SignUpSchema>) {
             :schema="signUpSchema"
             title="Sign up"
             description="Create an account to access your account."
-            icon="i-lucide-user"
             :fields="signUpFields"
             :providers
             @submit="onSignUp"
+            :ui="{
+              title: 'text-left',
+              description: 'text-left'
+            }"
           />
         </template>
       </UTabs>
