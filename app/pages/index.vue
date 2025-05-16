@@ -1,30 +1,78 @@
 <script setup lang="ts">
+import * as z from 'zod'
+import type { FormSubmitEvent } from '@nuxt/ui'
+
 definePageMeta({
   auth: {
     only: 'guest',
     redirectUserTo: '/user',
   },
 })
+
 const auth = useAuth()
 const toast = useToast()
-const tabs = [
+
+const fields = [
   {
-    slot: 'signin',
-    label: 'Sign In',
-    icon: 'i-heroicons-user',
+    name: 'email',
+    type: 'text' as const,
+    label: 'Email',
+    placeholder: 'Enter your email',
+    required: true
   }, {
-    slot: 'signup',
-    label: 'Sign Up',
-    icon: 'i-heroicons-user-plus',
+    name: 'password',
+    label: 'Password',
+    type: 'password' as const,
+    placeholder: 'Enter your password'
   }
 ]
 
-const email = ref('')
-const password = ref('')
-const name = ref('')
-const loading = ref(false)
+const providers = [
+  {
+    label: 'GitHub',
+    icon: 'i-simple-icons-github',
+    onClick: () => {
+      auth.signIn.social({ provider: 'github', callbackURL: '/user' })
+    }
+  }
+]
 
-async function signIn() {
+const schema = z.object({
+  email: z.string().email('Invalid email'),
+  password: z.string().min(8, 'Must be at least 8 characters')
+})
+
+type Schema = z.output<typeof schema>
+
+async function onSubmit(payload: FormSubmitEvent<Schema>) {
+  console.log('Submitted', payload)
+  try {
+    const { data, error } = await auth.signIn.email({
+      email: payload.data.email,
+      password: payload.data.password,
+    })
+    console.log('User', data)
+    if (data) {
+      toast.add({
+        title: 'Successfully signed in',
+        color: 'success',
+      })
+      await navigateTo('/user')
+    } else {
+      toast.add({
+        title: error.message,
+        color: 'error',
+      })
+    }
+  } catch (error: any) {
+    toast.add({
+      title: error.message,
+      color: 'error',
+    })
+  }
+}
+
+/* async function signIn() {
   if (loading.value) return
   loading.value = true
   const { error } = await auth.signIn.email({
@@ -34,7 +82,7 @@ async function signIn() {
   if (error) {
     toast.add({
       title: error.message,
-      color: 'red',
+      color: 'error',
     })
   } else {
     await navigateTo('/user')
@@ -65,55 +113,21 @@ async function signUp() {
     await navigateTo('/user')
   }
   loading.value = false
-}
+} */
 </script>
 
 <template>
-  <UPageBody>
-    <UTabs :items="tabs" class="max-w-md mx-auto">
-      <template #signin>
-        <form class="flex flex-col gap-4" @submit.prevent="signIn">
-          <UFormField label="Email" required>
-            <UInput v-model="email" type="email" placeholder="Email" />
-          </UFormField>
-          <UFormField label="Password" requiredrequired>
-            <UInput v-model="password" type="password" placeholder="Password" />
-          </UFormField>
-          <UButton
-            type="submit"
-            color="neutral"
-            :loading
-            :disabled="!email || !password"
-          >
-            Sign In
-          </UButton>
-          <USeparator label="or" />
-          <UButton
-            icon="i-simple-icons-github"
-            type="button"
-            color="neutral"
-            @click="auth.signIn.social({ provider: 'github', callbackURL: '/user' })"
-          >
-            Sign In with Github
-          </UButton>
-        </form>
-      </template>
-      <template #signup>
-        <form class="flex flex-col gap-4" @submit.prevent="signUp">
-          <UFormField label="Email" required>
-            <UInput v-model="email" type="email" placeholder="Email" />
-          </UFormField>
-          <UFormField label="Password" requiredrequired>
-            <UInput v-model="password" type="password" placeholder="Password" />
-          </UFormField>
-          <UFormField label="Name">
-            <UInput v-model="name" type="name" placeholder="Name" />
-          </UFormField>
-          <UButton type="submit" color="neutral" :loading>
-            Sign Up
-          </UButton>
-        </form>
-      </template>
-    </UTabs>
-  </UPageBody>
+  <div class="flex flex-col items-center justify-center gap-4 p-4">
+    <UPageCard class="w-full max-w-md">
+      <UAuthForm
+        :schema
+        title="Login"
+        description="Enter your credentials to access your account."
+        icon="i-lucide-user"
+        :fields
+        :providers
+        @submit="onSubmit"
+      />
+    </UPageCard>
+  </div>
 </template>
