@@ -33,10 +33,15 @@ const headerLinks = computed(() => {
   <div>
     <UHeader>
       <template #title>
-        NuxtHub x BetterAuth
+        <div class="flex items-center gap-2">
+          <UIcon name="i-simple-icons-nuxtdotjs" />
+          <span class="text-sm font-bold font-mono">
+            BetterAuth
+          </span>
+        </div>
       </template>
 
-      <UNavigationMenu :items="headerLinks" />
+      <UNavigationMenu :items="headerLinks" variant="link" />
 
       <template #right>
         <UColorModeButton />

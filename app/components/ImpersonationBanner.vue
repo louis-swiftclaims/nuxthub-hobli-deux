@@ -3,15 +3,13 @@ const { isImpersonating, impersonatedUser, stopImpersonation } = useImpersonatio
 </script>
 
 <template>
-  <UBanner
-    v-if="isImpersonating && impersonatedUser"
-    icon="i-heroicons-user-circle"
-    :title="`Impersonating ${impersonatedUser.email}`"
-    :actions="[
-      {
-        label: 'Stop Impersonating',
-        onClick: stopImpersonation,
-      }
-    ]"
-  />
+  <Callout v-if="isImpersonating && impersonatedUser" class="rounded-none">
+    <div class="flex items-center justify-between text-sm">
+      <span>
+        Impersonating user:
+        {{ impersonatedUser.email }}
+      </span>
+      <UButton label="Stop Impersonating" size="xs" @click="stopImpersonation" />
+    </div>
+  </Callout>
 </template>

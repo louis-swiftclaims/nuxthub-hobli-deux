@@ -1,16 +1,21 @@
 import type { User } from 'better-auth'
 
 export const useImpersonation = () => {
-  const auth = useAuth()
+  const { client, session } = useAuth()
   const toast = useToast()
-  const router = useRouter()
 
   const impersonatedUser = useState<User | null>('impersonated-user', () => null)
   const isImpersonating = computed(() => !!impersonatedUser.value)
 
+  onMounted(async () => {
+    if (session.value?.impersonatedBy) {
+      await stopImpersonation()
+    }
+  })
+
   async function startImpersonation(user: User) {
     try {
-      await auth.client.admin.impersonateUser({ userId: user.id })
+      await client.admin.impersonateUser({ userId: user.id })
       impersonatedUser.value = user
       toast.add({
         title: 'Success',
@@ -28,14 +33,13 @@ export const useImpersonation = () => {
 
   async function stopImpersonation() {
     try {
-      await auth.client.admin.stopImpersonating()
+      await client.admin.stopImpersonating()
       impersonatedUser.value = null
       toast.add({
         title: 'Success',
         description: 'Impersonation stopped successfully',
         color: 'success',
       })
-      router.go(0)
     } catch (error) {
       toast.add({
         title: 'Error',

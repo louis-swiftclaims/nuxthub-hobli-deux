@@ -4,6 +4,7 @@ import type { User } from 'better-auth'
 
 const auth = useAuth()
 const toast = useToast()
+const UAvatar = resolveComponent('UAvatar')
 
 definePageMeta({
   auth: {
@@ -26,6 +27,16 @@ const { data: usersData, refresh } = await useAsyncData('users', async () => {
 const users = computed(() => usersData.value?.users ?? [])
 
 const columns: TableColumn<User>[] = [
+  {
+    accessorKey: 'image',
+    header: 'Image',
+    cell: ({ row }) => {
+      return h(UAvatar, {
+        src: row.original.image,
+        alt: row.original.name,
+      })
+    },
+  },
   {
     accessorKey: 'name',
     header: 'Name',
