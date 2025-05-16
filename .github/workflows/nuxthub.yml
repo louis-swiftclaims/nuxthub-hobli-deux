@@ -43,4 +43,4 @@ jobs:
         id: deploy
         with:
           project-key: nuxthub-better--emt0
-          directory: ../dist
+          directory: ./dist
