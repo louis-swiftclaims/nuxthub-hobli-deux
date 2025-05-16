@@ -45,8 +45,7 @@ function getBaseURL() {
   if (!baseURL) {
     try {
       baseURL = getRequestURL(useEvent()).origin
-    }
-    catch (e) {}
+    } catch (e) { /* empty */ }
   }
   return baseURL
 }
