@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxt/ui-pro', '@nuxthub/core'],
-  
+
   devtools: { enabled: true },
 
   runtimeConfig: {
@@ -12,7 +12,7 @@ export default defineNuxtConfig({
       },
     },
   },
-  
+
   css: ['~/assets/css/index.css'],
 
   future: { compatibilityVersion: 4 },
@@ -22,5 +22,6 @@ export default defineNuxtConfig({
   hub: {
     database: true,
     kv: true,
+    workers: true,
   }
 })
