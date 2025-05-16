@@ -4,9 +4,9 @@
 
 A demo of using [BetterAuth](https://better-auth.com) with [NuxtHub](https://hub.nuxt.com) (Cloudflare Pages with D1 & KV).
 
-https://better-auth.nuxt.dev
+https://better-auth.hrcd.fr
 
-[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://admin.hub.nuxt.com/new?repo=atinux/nuxthub-better-auth)
+[![Deploy to NuxtHub](https://hub.nuxt.com/button.svg)](https://admin.hub.nuxt.com/new?repo=hugorcd/nuxthub-better-auth)
 
 ## Features
 
