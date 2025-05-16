@@ -19,6 +19,7 @@
     "@nuxt/ui": "^2.19.2",
     "@nuxt/ui-pro": "^1.5.0",
     "@nuxthub/core": "^0.8.6",
+    "@shelve/cli": "^4.1.6",
     "@vueuse/core": "^11.2.0",
     "better-auth": "0.7.6-beta.2",
     "nuxt": "^3.14.159",
@@ -27,6 +28,7 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
+    "@hrcd/eslint-config": "^3.0.3",
     "@nuxt/eslint-config": "^0.6.1",
     "eslint": "^9.14.0",
     "typescript": "^5.6.3",
