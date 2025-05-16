@@ -1,3 +1,5 @@
+![social-preview](./public/og.png)
+
 # NuxtHub x BetterAuth
 
 A demo of using [BetterAuth](https://better-auth.com) with [NuxtHub](https://hub.nuxt.com) (Cloudflare Pages with D1 & KV).
