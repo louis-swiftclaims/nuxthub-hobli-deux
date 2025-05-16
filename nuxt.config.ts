@@ -23,5 +23,10 @@ export default defineNuxtConfig({
     database: true,
     kv: true,
     workers: true,
+    bindings: {
+      observability: {
+        logs: true,
+      },
+    },
   }
 })
