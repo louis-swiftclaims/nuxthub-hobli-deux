@@ -20,9 +20,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <UPageBody>
+  <div class="container py-8">
     <div class="grid gap-6 md:grid-cols-2">
-      <UPageCard class="flex flex-col items-center p-6">
+      <UCard class="flex flex-col items-center p-6">
         <UAvatar
           v-if="user?.image"
           :src="user.image"
@@ -54,9 +54,9 @@ onMounted(() => {
             </li>
           </ul>
         </div>
-      </UPageCard>
+      </UCard>
 
-      <UPageCard class="p-6">
+      <UCard class="p-6">
         <div class="text-lg font-semibold mb-2">
           Session
         </div>
@@ -66,10 +66,10 @@ onMounted(() => {
           <li><span class="font-medium">Expires at:</span> {{ session?.expiresAt }}</li>
           <li><span class="font-medium">Token:</span> <span class="break-all">{{ session?.token }}</span></li>
         </ul>
-      </UPageCard>
+      </UCard>
     </div>
 
-    <UPageCard class="p-6">
+    <UCard class="p-6 mt-6">
       <div class="text-lg font-semibold mb-2">
         Linked Accounts
       </div>
@@ -89,6 +89,6 @@ onMounted(() => {
           @click="client.linkSocial({ provider: 'github' })"
         />
       </div>
-    </UPageCard>
-  </UPageBody>
+    </UCard>
+  </div>
 </template>

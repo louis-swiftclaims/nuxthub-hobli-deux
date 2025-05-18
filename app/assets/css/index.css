@@ -1,15 +1,12 @@
 @import "tailwindcss";
-@import "@nuxt/ui-pro";
-
-@theme {
-  --font-sans: 'Geist', sans-serif;
-  --font-mono: 'Jetbrains Mono', monospace;
-}
+@import "@nuxt/ui";
 
 :root {
+  --font-sans: 'Geist', sans-serif;
+  --font-mono: 'Jetbrains Mono', monospace;
+  
   --ui-primary: black;
-
-  --ui-radius: 0
+  --ui-radius: 0;
 
   ::selection {
     color: #282a30;
@@ -28,13 +25,36 @@
 }
 
 .bg-stripes {
-  @apply w-full [background-size:4px_4px];
-  @apply dark:[background-image:linear-gradient(-45deg,var(--color-neutral-700)_12.50%,transparent_12.50%,transparent_50%,var(--color-neutral-700)_50%,var(--color-neutral-700)_62.50%,transparent_62.50%,transparent_100%)];
-  @apply not-dark:[background-image:linear-gradient(-45deg,var(--color-neutral-200)_12.50%,transparent_12.50%,transparent_50%,var(--color-neutral-200)_50%,var(--color-neutral-200)_62.50%,transparent_62.50%,transparent_100%)];
+  width: 100%;
+  background-size: 4px 4px;
+}
+
+.dark .bg-stripes {
+  background-image: linear-gradient(-45deg,var(--color-neutral-700) 12.50%,transparent 12.50%,transparent 50%,var(--color-neutral-700) 50%,var(--color-neutral-700) 62.50%,transparent 62.50%,transparent 100%);
+}
+
+:not(.dark) .bg-stripes {
+  background-image: linear-gradient(-45deg,var(--color-neutral-200) 12.50%,transparent 12.50%,transparent 50%,var(--color-neutral-200) 50%,var(--color-neutral-200) 62.50%,transparent 62.50%,transparent 100%);
 }
 
 .cross {
-  @apply before:absolute after:absolute;
-  @apply before:top-[-4px] before:bg-inverted before:content-[''] before:w-[1px] before:h-[9px];
-  @apply after:left-[-4px] after:bg-inverted after:content-[''] after:w-[9px] after:h-[1px];
+  position: relative;
+}
+
+.cross::before {
+  position: absolute;
+  top: -4px;
+  background-color: var(--color-inverted, currentColor);
+  content: '';
+  width: 1px;
+  height: 9px;
+}
+
+.cross::after {
+  position: absolute;
+  left: -4px;
+  background-color: var(--color-inverted, currentColor);
+  content: '';
+  width: 9px;
+  height: 1px;
 }

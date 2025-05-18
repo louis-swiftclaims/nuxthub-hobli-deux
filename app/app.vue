@@ -10,10 +10,10 @@ useSeoMeta({
 <template>
   <UApp>
     <NuxtLoadingIndicator />
-    <UMain>
+    <main class="flex-1">
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>
-    </UMain>
+    </main>
   </UApp>
 </template>
